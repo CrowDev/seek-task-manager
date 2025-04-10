@@ -1,20 +1,10 @@
 import "./App.css";
 import { useAuth } from "react-oidc-context";
-import {
-  VITE_AWS_CLIENT_ID,
-  VITE_AWS_LOGOUT_REDIRECT_URI,
-  VITE_AWS_COGNITO_DOMAIN,
-} from "@/utils/constants";
+import { useNavigate } from "react-router";
 
 function App() {
   const auth = useAuth();
-
-  const signOutRedirect = () => {
-    const clientId = VITE_AWS_CLIENT_ID;
-    const logoutUri = VITE_AWS_LOGOUT_REDIRECT_URI;
-    const cognitoDomain = VITE_AWS_COGNITO_DOMAIN;
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-  };
+  const navigate = useNavigate();
 
   if (auth.isLoading) {
     return <div>Loading...</div>;
@@ -25,23 +15,28 @@ function App() {
   }
 
   if (auth.isAuthenticated) {
-    return (
-      <div>
-        <pre> Hello: {auth.user?.profile.email} </pre>
-        <pre> ID Token: {auth.user?.id_token} </pre>
-        <pre> Access Token: {auth.user?.access_token} </pre>
-        <pre> Refresh Token: {auth.user?.refresh_token} </pre>
-
-        <button onClick={() => auth.removeUser()}>Sign out</button>
-      </div>
-    );
+    navigate("/dashboard");
   }
 
   return (
-    <div>
-      <button onClick={() => auth.signinRedirect()}>Sign in</button>
-      <button onClick={() => signOutRedirect()}>Sign out</button>
-      <button onClick={() => auth.removeUser()}>Sign out</button>
+    <div className="p-8 mx-auto w-full max-w-md bg-white rounded-lg shadow-md mt-[100px]">
+      <h1 className="mb-6 text-2xl font-bold text-center text-neutral-charcoal">
+        Welcome to Task Manager Platform
+      </h1>
+
+      <p className="mb-8 text-center text-secondary-gray">
+        In order to use the platform, please register to access all features and
+        benefits.
+      </p>
+
+      <div className="flex justify-center">
+        <button
+          onClick={() => auth.signinRedirect()}
+          className="py-2 px-6 font-medium text-white rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:cursor-pointer focus:ring-2 focus:outline-none bg-primary-blue hover:bg-[#244a7f] focus:ring-[#2d5c9f]"
+        >
+          Sign Up
+        </button>
+      </div>
     </div>
   );
 }
