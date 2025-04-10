@@ -55,7 +55,6 @@ export const DashboardContextProvider = ({ children }) => {
   const handleCloseDialogTask = (isSubmit) => {
     setOpenDialogTask(false);
     if (isSubmit) {
-      console.log("here");
       refetch();
     }
   };

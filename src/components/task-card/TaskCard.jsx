@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
@@ -9,7 +9,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
+import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
 
 const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -19,7 +19,7 @@ const TaskCard = ({ task }) => {
     handleOpenDialogTask,
     handleOpenDeleteDialogTask,
     setTaskToEdit,
-  } = useContext(DashboardPageContext);
+  } = useDashboardContext();
 
   const handleOptionsMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +34,10 @@ const TaskCard = ({ task }) => {
     } else {
       handleOpenDeleteDialogTask();
     }
+    setAnchorEl(null);
+  };
+
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
@@ -75,7 +79,7 @@ const TaskCard = ({ task }) => {
           id="options-menu"
           anchorEl={anchorEl}
           open={menuOpen}
-          onClose={handleOptionsMenuClose}
+          onClose={handleCloseMenu}
         >
           <MenuItem onClick={() => handleOptionsMenuClose("edit", task)}>
             <ListItemIcon>
