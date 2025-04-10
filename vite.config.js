@@ -10,4 +10,9 @@ export default defineConfig({
       "@": "/src",
     },
   },
+  test: {
+    environment: "happy-dom",
+    setupFiles: "./src/setupTests.js",
+    includes: ["src/**/*.{test,spec}.{js,jsx,ts,tsx}"],
+  },
 });
