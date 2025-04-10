@@ -23,9 +23,6 @@ const DashboardPage = () => {
               <button className="py-2 px-3 font-semibold rounded-lg transition-colors hover:cursor-pointer text-secondary-gray hover:bg-secondary-silver">
                 Board
               </button>
-              <button className="py-2 px-3 font-semibold rounded-lg transition-colors hover:cursor-pointer text-secondary-gray hover:bg-secondary-silver">
-                List
-              </button>
             </div>
             <CreateTaskButton />
           </article>
