@@ -20,7 +20,7 @@ const TaskDeleteDialog = () => {
   return (
     <Dialog
       open={openDeleteDialogTask}
-      onClose={handleCloseDeleteDialogTask}
+      onClose={() => handleCloseDeleteDialogTask(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >

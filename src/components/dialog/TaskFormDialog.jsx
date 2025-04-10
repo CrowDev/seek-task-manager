@@ -27,7 +27,7 @@ const TaskFormDialog = () => {
     <>
       <Dialog
         open={openDialogTask}
-        onClose={handleCloseDialogTask}
+        onClose={() => handleCloseDialogTask(false)}
         maxWidth="sm"
         fullWidth={true}
         slotProps={{
