@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 const DefaultLayout = () => {
   return (
-    <div className="bg-neutral-mist min-h-dvh">
+    <div className="bg-neutral-mist min-h-dvh min-w-[430px]">
       <Box>
         <AppBar
           sx={{

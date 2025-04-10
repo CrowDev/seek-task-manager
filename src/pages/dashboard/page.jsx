@@ -4,7 +4,9 @@ import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 import Grid from "@mui/material/Grid";
 import TaskFormDialog from "@/components/dialog/TaskFormDialog";
 import BoardColumn from "@/components/board-column/BoardColumn";
-import TaskDeleteDialog from "../../components/dialog/TaskDeleteDialog";
+import TaskDeleteDialog from "@/components/dialog/TaskDeleteDialog";
+import TabsTasks from "@/components/tab-tasks/TabsTasks";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 const DashboardPage = () => {
   const [openDialogTask, setOpenDialogTask] = useState(false);
@@ -12,6 +14,7 @@ const DashboardPage = () => {
   const [isCreatingTask, setIsCreatingTask] = useState(true);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const { tasks, loading, error, refetch } = useTasks();
+  const breakpoint = useBreakpoint();
 
   const handleSetActionDialogTask = (isCreating) => {
     if (isCreating) {
@@ -109,15 +112,18 @@ const DashboardPage = () => {
                 Create new task
               </button>
             </article>
-            <Grid container spacing={3} columns={5}>
-              {columns.map((column) => (
-                <BoardColumn
-                  key={column.title}
-                  title={column.title}
-                  tasks={column.tasks}
-                />
-              ))}
-            </Grid>
+            {breakpoint === "desktop" && (
+              <Grid container spacing={3} columns={5}>
+                {columns.map((column) => (
+                  <BoardColumn
+                    key={column.title}
+                    title={column.title}
+                    tasks={column.tasks}
+                  />
+                ))}
+              </Grid>
+            )}
+            {breakpoint === "tablet" && <TabsTasks columns={columns} />}
           </section>
           <TaskFormDialog
             open={openDialogTask}
