@@ -14,6 +14,9 @@ const DashboardPage = () => {
   const { tasks, loading, error, refetch } = useTasks();
 
   const handleSetActionDialogTask = (isCreating) => {
+    if (isCreating) {
+      setTaskToEdit(null);
+    }
     setIsCreatingTask(isCreating);
     handleOpenDialogTask();
   };
