@@ -1,20 +1,30 @@
 import { useState } from "react";
 import { useTasks } from "@/hooks/getTasks";
+import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 import Grid from "@mui/material/Grid";
 import TaskFormDialog from "@/components/dialog/TaskFormDialog";
 import BoardColumn from "@/components/board-column/BoardColumn";
 
 const DashboardPage = () => {
   const [openDialogTask, setOpenDialogTask] = useState(false);
+  const [isCreatingTask, setIsCreatingTask] = useState(true);
+  const [taskToEdit, setTaskToEdit] = useState(null);
   const { tasks, loading, error, refetch } = useTasks();
+
+  const handleSetActionDialogTask = (isCreating) => {
+    setIsCreatingTask(isCreating);
+    handleOpenDialogTask();
+  };
 
   const handleOpenDialogTask = () => {
     setOpenDialogTask(true);
   };
 
-  const handleCloseDialogTask = () => {
+  const handleCloseDialogTask = (isSubmit) => {
     setOpenDialogTask(false);
-    refetch();
+    if (isSubmit) {
+      refetch();
+    }
   };
 
   const todoTasks = tasks.filter((task) => task.status === "todo");
@@ -47,7 +57,15 @@ const DashboardPage = () => {
   ];
 
   return (
-    <>
+    <DashboardPageContext.Provider
+      value={{
+        isCreatingTask,
+        handleSetActionDialogTask,
+        handleOpenDialogTask,
+        taskToEdit,
+        setTaskToEdit,
+      }}
+    >
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -68,7 +86,7 @@ const DashboardPage = () => {
                 </button>
               </div>
               <button
-                onClick={handleOpenDialogTask}
+                onClick={() => handleSetActionDialogTask(true)}
                 className="py-2 px-3 font-semibold rounded-lg transition-colors hover:cursor-pointer text-secondary-gray hover:bg-secondary-silver"
               >
                 Create new task
@@ -90,7 +108,7 @@ const DashboardPage = () => {
           />
         </>
       )}
-    </>
+    </DashboardPageContext.Provider>
   );
 };
 

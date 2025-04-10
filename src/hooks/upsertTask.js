@@ -1,11 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useContext } from "react";
+import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export function useCreateTask(body) {
+export function useUpsertTask(body) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { isCreatingTask, taskToEdit } = useContext(DashboardPageContext);
 
   const createTask = useCallback(async () => {
     setLoading(true);
@@ -13,8 +15,11 @@ export function useCreateTask(body) {
     setData(null);
 
     try {
-      const response = await fetch(`${API_URL}create`, {
-        method: "POST",
+      const url = isCreatingTask
+        ? `${API_URL}create`
+        : `${API_URL}edit/${taskToEdit._id}`;
+      const response = await fetch(url, {
+        method: isCreatingTask ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -30,7 +35,7 @@ export function useCreateTask(body) {
     } finally {
       setLoading(false);
     }
-  }, [body]);
+  }, [body, isCreatingTask, taskToEdit]);
 
   return {
     data,

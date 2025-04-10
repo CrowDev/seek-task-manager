@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
@@ -9,16 +9,25 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 
 const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
+  const { handleSetActionDialogTask, handleOpenDialogTask, setTaskToEdit } =
+    useContext(DashboardPageContext);
 
   const handleOptionsMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleOptionsMenuClose = () => {
+  const handleOptionsMenuClose = (action, task) => {
+    if (action === "edit") {
+      const isCreating = false;
+      handleSetActionDialogTask(isCreating);
+      setTaskToEdit(task);
+      handleOpenDialogTask();
+    }
     setAnchorEl(null);
   };
   const getPriorityColor = (priority) => {
@@ -61,13 +70,13 @@ const TaskCard = ({ task }) => {
           open={menuOpen}
           onClose={handleOptionsMenuClose}
         >
-          <MenuItem onClick={handleOptionsMenuClose}>
+          <MenuItem onClick={() => handleOptionsMenuClose("edit", task)}>
             <ListItemIcon>
               <EditIcon />
             </ListItemIcon>
             <ListItemText>Edit</ListItemText>
           </MenuItem>
-          <MenuItem onClick={handleOptionsMenuClose}>
+          <MenuItem onClick={() => handleOptionsMenuClose("delete", task)}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>

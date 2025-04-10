@@ -10,14 +10,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
-import { useState } from "react";
-import { useCreateTask } from "@/hooks/createTask";
+import { useState, useContext } from "react";
+import { useUpsertTask } from "@/hooks/upsertTask";
+import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 
 const TaskFormDialog = ({ open, handleClose }) => {
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
   const [body, setBody] = useState({});
-  const { data, error, loading, createTask } = useCreateTask(body);
+  const { isCreatingTask, taskToEdit } = useContext(DashboardPageContext);
+  console.log(taskToEdit);
+
+  const { data, error, loading, createTask } = useUpsertTask(body);
 
   return (
     <>
@@ -32,16 +36,20 @@ const TaskFormDialog = ({ open, handleClose }) => {
             onSubmit: async (event) => {
               event.preventDefault();
               await createTask();
-              handleClose();
+              const isSubmit = true;
+              handleClose(isSubmit);
             },
           },
         }}
       >
-        <DialogTitle>Create new task</DialogTitle>
+        <DialogTitle>
+          {isCreatingTask ? "Create new task" : "Edit task"}
+        </DialogTitle>
         <Divider />
         <DialogContent>
           <div className="mb-3">
             <TextField
+              value={body?.title ?? taskToEdit?.title}
               autoFocus
               required
               margin="dense"
@@ -58,6 +66,7 @@ const TaskFormDialog = ({ open, handleClose }) => {
           </div>
           <div className="mb-3">
             <TextField
+              value={body?.description ?? taskToEdit?.description}
               required
               margin="dense"
               id="description"
@@ -82,15 +91,15 @@ const TaskFormDialog = ({ open, handleClose }) => {
                   id="priority-select"
                   name="priority"
                   label="Priority"
-                  value={priority}
+                  value={priority || taskToEdit?.priority}
                   onChange={(e) => {
                     setPriority(e.target.value);
                     setBody((prev) => ({ ...prev, priority: e.target.value }));
                   }}
                 >
-                  <MenuItem value={"High"}>High</MenuItem>
-                  <MenuItem value={"Medium"}>Medium</MenuItem>
-                  <MenuItem value={"Low"}>Low</MenuItem>
+                  <MenuItem value={"high"}>High</MenuItem>
+                  <MenuItem value={"medium"}>Medium</MenuItem>
+                  <MenuItem value={"low"}>Low</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -102,7 +111,7 @@ const TaskFormDialog = ({ open, handleClose }) => {
                   id="status-select"
                   name="status"
                   label="Status"
-                  vale={status}
+                  value={status || taskToEdit?.status}
                   onChange={(e) => {
                     setStatus(e.target.value);
                     setBody((prev) => ({ ...prev, status: e.target.value }));
@@ -119,8 +128,10 @@ const TaskFormDialog = ({ open, handleClose }) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Create Task</Button>
+          <Button onClick={() => handleClose(false)}>Cancel</Button>
+          <Button type="submit">
+            {isCreatingTask ? "Create Task" : "Edit Task"}
+          </Button>
         </DialogActions>
       </Dialog>
     </>
