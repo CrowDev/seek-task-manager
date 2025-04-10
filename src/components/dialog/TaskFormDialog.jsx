@@ -29,9 +29,9 @@ const TaskFormDialog = ({ open, handleClose }) => {
         slotProps={{
           paper: {
             component: "form",
-            onSubmit: (event) => {
+            onSubmit: async (event) => {
               event.preventDefault();
-              createTask();
+              await createTask();
               handleClose();
             },
           },
