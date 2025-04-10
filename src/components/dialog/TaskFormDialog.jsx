@@ -11,18 +11,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
+import { useCreateTask } from "@/hooks/createTask";
 
 const TaskFormDialog = ({ open, handleClose }) => {
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
-
-  const onChangePriority = (event) => {
-    setPriority(event.target.value);
-  };
-
-  const onChangeStatus = (event) => {
-    setStatus(event.target.value);
-  };
+  const [body, setBody] = useState({});
+  const { data, error, loading, createTask } = useCreateTask(body);
 
   return (
     <>
@@ -36,10 +31,8 @@ const TaskFormDialog = ({ open, handleClose }) => {
             component: "form",
             onSubmit: (event) => {
               event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
-              console.log(formJson);
-              // handleClose();
+              createTask();
+              handleClose();
             },
           },
         }}
@@ -58,6 +51,9 @@ const TaskFormDialog = ({ open, handleClose }) => {
               type="text"
               fullWidth
               variant="outlined"
+              onChange={(e) =>
+                setBody((prev) => ({ ...prev, title: e.target.value }))
+              }
             />
           </div>
           <div className="mb-3">
@@ -72,6 +68,9 @@ const TaskFormDialog = ({ open, handleClose }) => {
               variant="outlined"
               multiline
               rows={3}
+              onChange={(e) =>
+                setBody((prev) => ({ ...prev, description: e.target.value }))
+              }
             />
           </div>
           <Grid container spacing={3} columns={2}>
@@ -84,7 +83,10 @@ const TaskFormDialog = ({ open, handleClose }) => {
                   name="priority"
                   label="Priority"
                   value={priority}
-                  onChange={onChangePriority}
+                  onChange={(e) => {
+                    setPriority(e.target.value);
+                    setBody((prev) => ({ ...prev, priority: e.target.value }));
+                  }}
                 >
                   <MenuItem value={"High"}>High</MenuItem>
                   <MenuItem value={"Medium"}>Medium</MenuItem>
@@ -101,7 +103,10 @@ const TaskFormDialog = ({ open, handleClose }) => {
                   name="status"
                   label="Status"
                   vale={status}
-                  onChange={onChangeStatus}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    setBody((prev) => ({ ...prev, status: e.target.value }));
+                  }}
                 >
                   <MenuItem value={"todo"}>Todo</MenuItem>
                   <MenuItem value={"in-progress"}>In Progress</MenuItem>
