@@ -14,22 +14,29 @@ import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
-  const { handleSetActionDialogTask, handleOpenDialogTask, setTaskToEdit } =
-    useContext(DashboardPageContext);
+  const {
+    handleSetActionDialogTask,
+    handleOpenDialogTask,
+    handleOpenDeleteDialogTask,
+    setTaskToEdit,
+  } = useContext(DashboardPageContext);
 
   const handleOptionsMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleOptionsMenuClose = (action, task) => {
+    setTaskToEdit(task);
     if (action === "edit") {
       const isCreating = false;
       handleSetActionDialogTask(isCreating);
-      setTaskToEdit(task);
       handleOpenDialogTask();
+    } else {
+      handleOpenDeleteDialogTask();
     }
     setAnchorEl(null);
   };
+
   const getPriorityColor = (priority) => {
     const colors = {
       low: "#57a773",

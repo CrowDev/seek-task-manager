@@ -4,9 +4,11 @@ import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
 import Grid from "@mui/material/Grid";
 import TaskFormDialog from "@/components/dialog/TaskFormDialog";
 import BoardColumn from "@/components/board-column/BoardColumn";
+import TaskDeleteDialog from "../../components/dialog/TaskDeleteDialog";
 
 const DashboardPage = () => {
   const [openDialogTask, setOpenDialogTask] = useState(false);
+  const [openDeleteDialogTask, setOpenDeleteDialogTask] = useState(false);
   const [isCreatingTask, setIsCreatingTask] = useState(true);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const { tasks, loading, error, refetch } = useTasks();
@@ -18,6 +20,17 @@ const DashboardPage = () => {
 
   const handleOpenDialogTask = () => {
     setOpenDialogTask(true);
+  };
+
+  const handleOpenDeleteDialogTask = () => {
+    setOpenDeleteDialogTask(true);
+  };
+
+  const handleCloseDeleteDialogTask = (isDelete) => {
+    setOpenDeleteDialogTask(false);
+    if (isDelete) {
+      refetch();
+    }
   };
 
   const handleCloseDialogTask = (isSubmit) => {
@@ -62,6 +75,7 @@ const DashboardPage = () => {
         isCreatingTask,
         handleSetActionDialogTask,
         handleOpenDialogTask,
+        handleOpenDeleteDialogTask,
         taskToEdit,
         setTaskToEdit,
       }}
@@ -105,6 +119,10 @@ const DashboardPage = () => {
           <TaskFormDialog
             open={openDialogTask}
             handleClose={handleCloseDialogTask}
+          />
+          <TaskDeleteDialog
+            open={openDeleteDialogTask}
+            handleClose={handleCloseDeleteDialogTask}
           />
         </>
       )}

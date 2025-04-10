@@ -19,7 +19,6 @@ const TaskFormDialog = ({ open, handleClose }) => {
   const [status, setStatus] = useState("");
   const [body, setBody] = useState({});
   const { isCreatingTask, taskToEdit } = useContext(DashboardPageContext);
-  console.log(taskToEdit);
 
   const { data, error, loading, createTask } = useUpsertTask(body);
 
