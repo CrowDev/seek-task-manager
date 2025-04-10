@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -6,21 +5,22 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { useDeleteTask } from "@/hooks/deleteTask";
-import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
+import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
 
-const TaskDeleteDialog = ({ open, handleClose }) => {
-  const { data, error, loading, deleteTask } = useDeleteTask();
-  const { taskToEdit } = useContext(DashboardPageContext);
+const TaskDeleteDialog = () => {
+  const { deleteTask } = useDeleteTask();
+  const { openDeleteDialogTask, handleCloseDeleteDialogTask, taskToEdit } =
+    useDashboardContext();
   const handleDeleteTask = async () => {
     await deleteTask();
     const isDelete = true;
-    handleClose(isDelete);
+    handleCloseDeleteDialogTask(isDelete);
   };
 
   return (
     <Dialog
-      open={open}
-      onClose={handleClose}
+      open={openDeleteDialogTask}
+      onClose={handleCloseDeleteDialogTask}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -37,7 +37,9 @@ const TaskDeleteDialog = ({ open, handleClose }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => handleClose(false)}>Cancel</Button>
+        <Button onClick={() => handleCloseDeleteDialogTask(false)}>
+          Cancel
+        </Button>
         <Button onClick={handleDeleteTask} autoFocus>
           Delete
         </Button>

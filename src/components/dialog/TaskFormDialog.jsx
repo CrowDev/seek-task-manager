@@ -10,23 +10,24 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useUpsertTask } from "@/hooks/upsertTask";
-import { DashboardPageContext } from "@/contexts/dashboard/DashboardContext";
+import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
 
-const TaskFormDialog = ({ open, handleClose }) => {
+const TaskFormDialog = () => {
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
   const [body, setBody] = useState({});
-  const { isCreatingTask, taskToEdit } = useContext(DashboardPageContext);
+  const { openDialogTask, handleCloseDialogTask, isCreatingTask, taskToEdit } =
+    useDashboardContext();
 
-  const { data, error, loading, createTask } = useUpsertTask(body);
+  const { createTask } = useUpsertTask(body);
 
   return (
     <>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={openDialogTask}
+        onClose={handleCloseDialogTask}
         maxWidth="sm"
         fullWidth={true}
         slotProps={{
@@ -36,7 +37,7 @@ const TaskFormDialog = ({ open, handleClose }) => {
               event.preventDefault();
               await createTask();
               const isSubmit = true;
-              handleClose(isSubmit);
+              handleCloseDialogTask(isSubmit);
             },
           },
         }}
@@ -127,7 +128,7 @@ const TaskFormDialog = ({ open, handleClose }) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose(false)}>Cancel</Button>
+          <Button onClick={() => handleCloseDialogTask(false)}>Cancel</Button>
           <Button type="submit">
             {isCreatingTask ? "Create Task" : "Edit Task"}
           </Button>

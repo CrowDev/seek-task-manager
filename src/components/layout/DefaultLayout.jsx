@@ -11,7 +11,9 @@ const DefaultLayout = () => {
             paddingY: "15px",
           }}
         >
-          <div className="mx-auto w-full max-w-7xl">Task Manager</div>
+          <div className="mx-auto w-full max-w-7xl">
+            <span className="text-2xl text-semibold">Task Manager</span>
+          </div>
         </AppBar>
       </Box>
       <div className="p-3 md:p-5 mt-[54px]">

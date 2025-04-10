@@ -1,8 +1,10 @@
 import { useState } from "react";
 import BoardColumn from "@/components/board-column/BoardColumn";
+import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
 
-const TabsTasks = ({ columns }) => {
+const TabsTasks = () => {
   const [activeTab, setActiveTab] = useState("To Do");
+  const { columns } = useDashboardContext();
   const handleActiveTab = (tab) => {
     setActiveTab(tab);
   };

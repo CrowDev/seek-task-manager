@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-
-const breakpoints = {
-  tablet: 768,
-  desktop: 1024,
-};
+import { breakpoints } from "@/utils/constants";
 
 const getBreakpoint = (width) => {
   if (width >= breakpoints.desktop) {
