@@ -71,7 +71,7 @@ const DefaultLayout = () => {
           </div>
         </AppBar>
       </Box>
-      <div className="px-3 md:px-5 pt-[50px] mt-[54px]">
+      <div className="px-3 md:px-5 pt-[100px]">
         <Outlet />
       </div>
     </div>

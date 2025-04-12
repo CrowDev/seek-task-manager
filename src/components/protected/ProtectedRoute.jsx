@@ -1,3 +1,4 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router";
 
@@ -6,7 +7,11 @@ const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
 
   if (auth.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (auth.error) {

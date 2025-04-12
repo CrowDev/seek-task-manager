@@ -4,11 +4,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useDeleteTask } from "@/hooks/deleteTask";
 import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
 
 const TaskDeleteDialog = () => {
-  const { deleteTask } = useDeleteTask();
+  const { deleteTask, loading } = useDeleteTask();
   const { openDeleteDialogTask, handleCloseDeleteDialogTask, taskToEdit } =
     useDashboardContext();
   const handleDeleteTask = async () => {
@@ -40,8 +41,15 @@ const TaskDeleteDialog = () => {
         <Button onClick={() => handleCloseDeleteDialogTask(false)}>
           Cancel
         </Button>
-        <Button onClick={handleDeleteTask} autoFocus>
-          Delete
+        <Button onClick={handleDeleteTask} disabled={loading} autoFocus>
+          {loading ? (
+            <div className="flex items-center space-x-2">
+              <span>Deleting task</span>
+              <CircularProgress size={16} />
+            </div>
+          ) : (
+            <span>Delete</span>
+          )}
         </Button>
       </DialogActions>
     </Dialog>

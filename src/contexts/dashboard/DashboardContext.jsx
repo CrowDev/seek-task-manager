@@ -8,7 +8,8 @@ export const DashboardContextProvider = ({ children }) => {
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [openDialogTask, setOpenDialogTask] = useState(false);
   const [openDeleteDialogTask, setOpenDeleteDialogTask] = useState(false);
-  const { tasks, refetch } = useTasks();
+  const { tasks, refetch, loading } = useTasks();
+
   const todoTasks = tasks.filter((task) => task.status === "todo");
   const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
   const inReviewTasks = tasks.filter((task) => task.status === "in-review");
@@ -82,6 +83,7 @@ export const DashboardContextProvider = ({ children }) => {
         tasks,
         refetch,
         columns,
+        loading,
       }}
     >
       {children}

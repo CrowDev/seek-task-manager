@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { useUpsertTask } from "@/hooks/upsertTask";
 import { useDashboardContext } from "@/contexts/dashboard/DashboardContext";
@@ -21,7 +22,7 @@ const TaskFormDialog = () => {
   const { openDialogTask, handleCloseDialogTask, isCreatingTask, taskToEdit } =
     useDashboardContext();
 
-  const { createTask } = useUpsertTask(body);
+  const { createTask, loading } = useUpsertTask(body);
 
   return (
     <>
@@ -87,6 +88,7 @@ const TaskFormDialog = () => {
               <FormControl fullWidth>
                 <InputLabel id="priority-select-label">Priority</InputLabel>
                 <Select
+                  required
                   labelId="priority-select-label"
                   id="priority-select"
                   name="priority"
@@ -107,6 +109,7 @@ const TaskFormDialog = () => {
               <FormControl fullWidth>
                 <InputLabel id="status-select-label">Status</InputLabel>
                 <Select
+                  required
                   labelId="status-select-label"
                   id="status-select"
                   name="status"
@@ -129,8 +132,15 @@ const TaskFormDialog = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleCloseDialogTask(false)}>Cancel</Button>
-          <Button type="submit">
-            {isCreatingTask ? "Create Task" : "Edit Task"}
+          <Button type="submit" disabled={loading} variant="contained">
+            {loading && (
+              <div className="flex items-center space-x-2">
+                <span>{isCreatingTask ? "Creating" : "Updating"} task</span>
+                <CircularProgress size={16} />
+              </div>
+            )}
+            {!loading &&
+              (isCreatingTask && !loading ? "Create Task" : "Edit Task")}
           </Button>
         </DialogActions>
       </Dialog>
