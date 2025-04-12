@@ -8,7 +8,7 @@ const getBreakpoint = (width) => {
   return "tablet";
 };
 
-export default function useBreakpoint() {
+export function useBreakpoint() {
   const [breakpoint, setBreakpoint] = useState(() =>
     getBreakpoint(window.innerWidth),
   );

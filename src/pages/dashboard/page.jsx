@@ -3,7 +3,7 @@ import TaskFormDialog from "@/components/dialog/TaskFormDialog";
 import Board from "@/components/board/Board";
 import TaskDeleteDialog from "@/components/dialog/TaskDeleteDialog";
 import TabsTasks from "@/components/tab-tasks/TabsTasks";
-import useBreakpoint from "@/hooks/useBreakpoint";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import CreateTaskButton from "@/components/create-new-task-button/CreateTaskButton";
 
 const DashboardPage = () => {
