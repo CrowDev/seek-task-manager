@@ -1,5 +1,6 @@
 import { AppBar, Box } from "@mui/material";
 import { Outlet } from "react-router";
+import { NavLink } from "react-router";
 import { useAuth } from "react-oidc-context";
 import {
   VITE_AWS_CLIENT_ID,
@@ -33,13 +34,39 @@ const DefaultLayout = () => {
           <div className="flex justify-between px-3 mx-auto w-full max-w-7xl lg:px-0">
             <span className="text-2xl text-semibold">Task Manager</span>
             {auth.isAuthenticated && (
-              <IconButton
-                sx={{ color: "#fff" }}
-                aria-label="signout"
-                onClick={handleSignOut}
-              >
-                <ExitToAppIcon />
-              </IconButton>
+              <div className="flex items-center space-x-10">
+                <nav className="flex space-x-3">
+                  <NavLink
+                    to="/board"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-accent-success font-semibold"
+                        : "text-secondary-silver"
+                    }
+                    end
+                  >
+                    Board
+                  </NavLink>
+                  <NavLink
+                    to="/charts"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-accent-success font-semibold"
+                        : "text-secondary-silver"
+                    }
+                    end
+                  >
+                    Charts
+                  </NavLink>
+                </nav>
+                <IconButton
+                  sx={{ color: "#fff" }}
+                  aria-label="signout"
+                  onClick={handleSignOut}
+                >
+                  <ExitToAppIcon />
+                </IconButton>
+              </div>
             )}
           </div>
         </AppBar>
